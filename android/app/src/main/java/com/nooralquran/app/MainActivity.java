@@ -13,18 +13,22 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.view.View;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends Activity {
 
-    // You can set your custom Vercel deployment URL here:
-    // e.g., "https://noor-al-quran.vercel.app" or your custom domain.
-    // If empty or if offline, the app seamlessly serves the bundled offline assets!
-    public static final String VERCEL_URL = "https://noor-al-quran.vercel.app";
-    public static final String LOCAL_OFFLINE_URL = "file:///android_asset/dist/index.html";
+    // Virtual origin for streaming bundled app assets safely with standard HTTPS protocol
+    public static final String LOCAL_ORIGIN = "appassets.local";
+    public static final String LOCAL_ENTRY_URL = "https://" + LOCAL_ORIGIN + "/index.html";
 
     private WebView webView;
     private ProgressBar loadingProgress;
@@ -36,7 +40,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Keep CPU awake for smooth continuous Quran recitation
+        // Keep CPU awake for continuous Quran recitation playback
         PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
         if (powerManager != null) {
             wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "NoorAlQuran::AudioWakeLock");
@@ -64,21 +68,14 @@ public class MainActivity extends Activity {
         settings.setBuiltInZoomControls(false);
         settings.setDisplayZoomControls(false);
 
-        // Audio and Media auto-play without blocking user gestures
+        // Media autoplay for recitation without requiring touch events
         settings.setMediaPlaybackRequiresUserGesture(false);
-
-        // Cache strategy
-        if (isNetworkAvailable()) {
-            settings.setCacheMode(WebSettings.LOAD_DEFAULT);
-        } else {
-            settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
 
-        // Custom User-Agent tag to identify Android app
+        // Custom User-Agent tag
         String defaultUA = settings.getUserAgentString();
         settings.setUserAgentString(defaultUA + " NoorAlQuran-Android/1.0");
 
@@ -95,8 +92,33 @@ public class MainActivity extends Activity {
 
         webView.setWebViewClient(new WebViewClient() {
             @Override
+            public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+                if (request != null && request.getUrl() != null) {
+                    WebResourceResponse resp = handleIntercept(request.getUrl());
+                    if (resp != null) return resp;
+                }
+                return super.shouldInterceptRequest(view, request);
+            }
+
+            @Override
+            public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+                if (url != null) {
+                    WebResourceResponse resp = handleIntercept(Uri.parse(url));
+                    if (resp != null) return resp;
+                }
+                return super.shouldInterceptRequest(view, url);
+            }
+
+            @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                // Open external protocols (mailto, tel, whatsapp, etc.) in system apps
+                if (url == null) return false;
+
+                // Keep local Quran app navigation inside WebView
+                if (url.startsWith("https://" + LOCAL_ORIGIN) || url.startsWith("http://" + LOCAL_ORIGIN)) {
+                    return false;
+                }
+
+                // Handle external protocols (whatsapp, mailto, tel)
                 if (url.startsWith("mailto:") || url.startsWith("tel:") || url.startsWith("whatsapp:") || url.startsWith("intent:")) {
                     try {
                         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
@@ -123,21 +145,93 @@ public class MainActivity extends Activity {
 
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                // If remote Vercel fails to load (e.g. offline), fallback to local offline asset bundle
-                if (failingUrl != null && !failingUrl.startsWith("file:///")) {
-                    view.loadUrl(LOCAL_OFFLINE_URL);
+                // If a remote URL failed, instantly fall back to the built-in local Quran app
+                if (failingUrl != null && !failingUrl.contains(LOCAL_ORIGIN)) {
+                    view.loadUrl(LOCAL_ENTRY_URL);
                 }
             }
         });
     }
 
-    private void loadApp() {
-        if (isNetworkAvailable() && VERCEL_URL != null && !VERCEL_URL.isEmpty()) {
-            webView.loadUrl(VERCEL_URL);
-        } else {
-            // Load bundled local files if offline
-            webView.loadUrl(LOCAL_OFFLINE_URL);
+    private WebResourceResponse handleIntercept(Uri uri) {
+        if (uri == null) return null;
+        String host = uri.getHost();
+
+        // Intercept requests directed to local app origin
+        if (LOCAL_ORIGIN.equalsIgnoreCase(host) || "localhost".equalsIgnoreCase(host)) {
+            String path = uri.getPath();
+            if (path == null || path.isEmpty() || path.equals("/")) {
+                path = "/index.html";
+            }
+
+            String assetPath = "dist" + (path.startsWith("/") ? path : "/" + path);
+            try {
+                InputStream is = getAssets().open(assetPath);
+                String mimeType = getMimeType(path);
+                String encoding = isTextMime(mimeType) ? "UTF-8" : null;
+
+                Map<String, String> headers = new HashMap<String, String>();
+                headers.put("Access-Control-Allow-Origin", "*");
+                headers.put("Access-Control-Allow-Methods", "GET, HEAD, OPTIONS");
+                headers.put("Access-Control-Allow-Headers", "*");
+                headers.put("Cache-Control", "no-cache");
+
+                return new WebResourceResponse(mimeType, encoding, 200, "OK", headers, is);
+            } catch (IOException e) {
+                // SPA client-side route fallback (e.g. navigation without direct file)
+                if (!path.contains(".")) {
+                    try {
+                        InputStream is = getAssets().open("dist/index.html");
+                        Map<String, String> headers = new HashMap<String, String>();
+                        headers.put("Access-Control-Allow-Origin", "*");
+                        return new WebResourceResponse("text/html", "UTF-8", 200, "OK", headers, is);
+                    } catch (IOException ignored) {}
+                }
+            }
         }
+        return null;
+    }
+
+    private String getMimeType(String path) {
+        String lower = path.toLowerCase();
+        if (lower.endsWith(".html") || lower.endsWith(".htm")) return "text/html";
+        if (lower.endsWith(".js") || lower.endsWith(".mjs")) return "application/javascript";
+        if (lower.endsWith(".css")) return "text/css";
+        if (lower.endsWith(".png")) return "image/png";
+        if (lower.endsWith(".jpg") || lower.endsWith(".jpeg")) return "image/jpeg";
+        if (lower.endsWith(".svg")) return "image/svg+xml";
+        if (lower.endsWith(".json")) return "application/json";
+        if (lower.endsWith(".woff2")) return "font/woff2";
+        if (lower.endsWith(".woff")) return "font/woff";
+        if (lower.endsWith(".ttf")) return "font/ttf";
+        if (lower.endsWith(".ico")) return "image/x-icon";
+        if (lower.endsWith(".webp")) return "image/webp";
+        if (lower.endsWith(".mp3")) return "audio/mpeg";
+        return "application/octet-stream";
+    }
+
+    private boolean isTextMime(String mime) {
+        return mime.startsWith("text/") || 
+               mime.equals("application/javascript") || 
+               mime.equals("application/json") || 
+               mime.equals("image/svg+xml");
+    }
+
+    private void loadApp() {
+        String targetUrl = LOCAL_ENTRY_URL;
+        try {
+            String configuredVercelUrl = getString(R.string.custom_vercel_url);
+            if (configuredVercelUrl != null) {
+                configuredVercelUrl = configuredVercelUrl.trim();
+                if (configuredVercelUrl.startsWith("http://") || configuredVercelUrl.startsWith("https://")) {
+                    if (isNetworkAvailable()) {
+                        targetUrl = configuredVercelUrl;
+                    }
+                }
+            }
+        } catch (Exception ignored) {}
+
+        webView.loadUrl(targetUrl);
     }
 
     private boolean isNetworkAvailable() {

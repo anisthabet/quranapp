@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">نور القرآن والأذكار</string>
     <string name="app_name_en">Noor Al-Quran</string>
-    <!-- Default Vercel production URL for WebView -->
-    <string name="default_web_url">https://noor-al-quran.vercel.app</string>
+    <!-- If you want the APK to load your personal live Vercel deployment, enter your custom URL here. -->
+    <!-- Leave empty ("") so the APK always runs the exact built-in Quran app directly from local assets! -->
+    <string name="custom_vercel_url"></string>
 </resources>

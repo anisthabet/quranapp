@@ -14,6 +14,13 @@ BUILD_DIR="$ANDROID_DIR/build"
 ANDROID_JAR="/usr/lib/android-sdk/platforms/android-23/android.jar"
 DX_BIN="/usr/lib/android-sdk/build-tools/debian/dx"
 
+# Sync latest Web app dist assets into Android assets
+echo "-> Step 0: Syncing latest compiled web app into Android assets..."
+rm -rf "$ASSETS_DIR/dist"
+mkdir -p "$ASSETS_DIR/dist"
+cp -r "$WORKDIR/dist"/* "$ASSETS_DIR/dist/"
+rm -f "$ASSETS_DIR/dist"/*.apk
+
 # 1. Clean and prepare build directories
 rm -rf "$BUILD_DIR"
 mkdir -p "$BUILD_DIR/gen" "$BUILD_DIR/classes" "$BUILD_DIR/bin" "$WORKDIR/dist-apk"
