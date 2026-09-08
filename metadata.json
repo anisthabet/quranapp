@@ -1,0 +1,6 @@
+{
+  "name": "Noor Al-Quran & Adhkar",
+  "description": "Modern Islamic web application to read and listen to the Holy Quran with renowned reciters, daily Adhkar and Duas, reading progress tracker, Hijri calendar, and multi-language support.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
