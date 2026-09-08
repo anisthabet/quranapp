@@ -9,7 +9,9 @@ import {
   Heart,
   Globe2,
   CheckCircle2,
-  Code2
+  Code2,
+  Download,
+  Smartphone
 } from 'lucide-react';
 import { Language } from '../types';
 import { translations } from '../data/translations';
@@ -77,7 +79,18 @@ export const DeveloperSection: React.FC<DeveloperSectionProps> = ({ language }) 
           </div>
 
           {/* Contact Action Buttons */}
-          <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 w-full md:w-auto justify-center">
+          <div className="flex flex-wrap items-center gap-3 w-full md:w-auto justify-center">
+            <a
+              id="dev-download-apk-btn"
+              href="/NoorAlQuran.apk"
+              download="NoorAlQuran.apk"
+              className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 text-sm font-semibold shadow-lg shadow-amber-950/30 transition-all hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <Smartphone className="w-4 h-4 text-amber-400" />
+              <span>{language === 'ar' ? 'تحميل تطبيق أندرويد (APK)' : 'Download Android App (APK)'}</span>
+              <Download className="w-3.5 h-3.5 text-amber-400/80" />
+            </a>
+
             <a
               id="dev-send-email-btn"
               href={`mailto:${developerEmail}?subject=Noor%20Al-Quran%20Platform%20Inquiry`}
