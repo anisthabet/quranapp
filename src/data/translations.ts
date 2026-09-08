@@ -8,7 +8,23 @@ export interface TranslationDictionary {
   navAdhkar: string;
   navTracker: string;
   navCalendar: string;
+  navDeveloper: string;
   navVercel: string;
+  
+  // Developer Section
+  developerTitle: string;
+  developerSubtitle: string;
+  developerRole: string;
+  developerBio: string;
+  developerMission: string;
+  developerTechStack: string;
+  developerContact: string;
+  developerSendEmail: string;
+  developerCopyEmail: string;
+  developerCopied: string;
+  developerContinuousCharity: string;
+  developerGitCommitTitle: string;
+  developerGitCommitDesc: string;
   
   // Quran Reader
   searchSurah: string;
@@ -120,7 +136,22 @@ export const translations: Record<Language, TranslationDictionary> = {
     navAdhkar: "الأذكار والأدعية",
     navTracker: "متابع الختمة",
     navCalendar: "التقويم الهجري",
+    navDeveloper: "المطور",
     navVercel: "النشر على Vercel",
+
+    developerTitle: "عن المطور",
+    developerSubtitle: "تعريف بمطور التطبيق، الرؤية البرمجية، وأوامر التحديث وإعادة البناء على Vercel",
+    developerRole: "مطور تطبيقات ويب متكاملة (Full Stack Developer)",
+    developerBio: "أنيس ثابت (Anis Thabet) — مطور ومبرمج برمجيات الويب، شغوف ببناء منصات رقمية إسلامية وتقنية متقدمة تجمع بين السرعة الفائقة، التصميم العصري الأنيق، وسهولة الاستخدام لخدمة المسلمين في جميع أنحاء العالم.",
+    developerMission: "صُمم وبُني هذا الموقع ليكون صدقة جارية خالصة لوجه الله تعالى، يتيح تلاوة القرآن الكريم والاستماع لأشهر القراء ومتابعة الأذكار والختمات بدون أي إعلانات مزعجة.",
+    developerTechStack: "التقنيات المستخدمة في البناء",
+    developerContact: "تواصل مع المطور",
+    developerSendEmail: "مراسلة عبر البريد",
+    developerCopyEmail: "نسخ البريد الإلكتروني",
+    developerCopied: "تم نسخ البريد بنجاح!",
+    developerContinuousCharity: "صدقة جارية — نسألكم صالح الدعاء",
+    developerGitCommitTitle: "أوامر Git لإعادة البناء والنشر التلقائي على Vercel",
+    developerGitCommitDesc: "بما أن مشروعك مربوط بمستودع Git على Vercel، فإن كل عملية Push على الفرع الرئيسي (main) تُطلق فوراً إعادة بناء ونشراً تلقائياً:",
 
     searchSurah: "بحث عن سورة أو آية...",
     allSurahs: "جميع السور",
@@ -224,7 +255,22 @@ export const translations: Record<Language, TranslationDictionary> = {
     navAdhkar: "Adhkar & Duas",
     navTracker: "Reading Tracker",
     navCalendar: "Hijri Calendar",
+    navDeveloper: "Developer",
     navVercel: "Deploy to Vercel",
+
+    developerTitle: "About the Developer",
+    developerSubtitle: "Meet the creator, project mission, and Git commands for automated Vercel rebuilds",
+    developerRole: "Full Stack & Web Developer",
+    developerBio: "Anis Thabet — Web developer and software craftsman, passionate about engineering modern, ultra-fast, and dignified Islamic platforms that serve the Muslim Ummah worldwide with seamless access to Quran and daily Adhkar.",
+    developerMission: "This project is built and maintained as a continuous charity (Sadaqah Jariyah), providing a high-performance digital Quran with authentic audio recitations, daily remembrance, and reading goals—completely ad-free.",
+    developerTechStack: "Technology Stack & Architecture",
+    developerContact: "Connect with the Developer",
+    developerSendEmail: "Send Direct Email",
+    developerCopyEmail: "Copy Email Address",
+    developerCopied: "Email copied successfully!",
+    developerContinuousCharity: "Continuous Charity (Sadaqah Jariyah) — Please keep us in your prayers",
+    developerGitCommitTitle: "Git Commit Commands for Vercel Rebuild",
+    developerGitCommitDesc: "Since your project is linked to your Git repository on Vercel, committing and pushing to your main branch triggers an automatic rebuild and zero-downtime deployment:",
 
     searchSurah: "Search surah or ayah...",
     allSurahs: "All Surahs",
@@ -328,7 +374,22 @@ export const translations: Record<Language, TranslationDictionary> = {
     navAdhkar: "Adhkar & Douas",
     navTracker: "Suivi Khatma",
     navCalendar: "Calendrier Hégirien",
+    navDeveloper: "Développeur",
     navVercel: "Déployer sur Vercel",
+
+    developerTitle: "À propos du Développeur",
+    developerSubtitle: "Découvrez le créateur, la mission du projet et les commandes Git pour Vercel",
+    developerRole: "Développeur Full Stack & Web",
+    developerBio: "Anis Thabet — Développeur web passionné par la création de plateformes islamiques modernes, ultra-rapides et accessibles à la communauté musulmane mondiale.",
+    developerMission: "Ce projet est conçu comme une aumône continue (Sadaqah Jariyah), sans publicité, pour offrir un accès pur au Coran et aux invocations.",
+    developerTechStack: "Technologies & Architecture",
+    developerContact: "Contacter le Développeur",
+    developerSendEmail: "Envoyer un e-mail",
+    developerCopyEmail: "Copier l'adresse e-mail",
+    developerCopied: "E-mail copié avec succès !",
+    developerContinuousCharity: "Aumône continue (Sadaqah Jariyah)",
+    developerGitCommitTitle: "Commandes Git pour reconstruire sur Vercel",
+    developerGitCommitDesc: "Chaque commit et push sur votre branche Git déclenche automatiquement une nouvelle compilation et un déploiement en ligne sur Vercel :",
 
     searchSurah: "Rechercher une sourate ou un verset...",
     allSurahs: "Toutes les sourates",
@@ -432,7 +493,22 @@ export const translations: Record<Language, TranslationDictionary> = {
     navAdhkar: "اذکار اور دعائیں",
     navTracker: "ختم قرآن ٹریکر",
     navCalendar: "ہجری کیلنڈر",
+    navDeveloper: "ڈویلپر",
     navVercel: "ورسل پر ڈیپلائے کریں",
+
+    developerTitle: "ڈویلپر کے بارے میں",
+    developerSubtitle: "ایپلی کیشن ڈویلپر کا تعارف اور ورسل پر خودکار ری بلڈ کے احکامات",
+    developerRole: "فل اسٹیک ویب ڈویلپر",
+    developerBio: "انیس ثابت (Anis Thabet) — جدید ویب ٹیکنالوجیز کے ماہر، امت مسلمہ کی خدمت کے لیے تیز رفتار اور اشتہارات سے پاک قرآنی پلیٹ فارم کے تخلیق کار۔",
+    developerMission: "یہ پروجیکٹ صدقہ جاریہ کے طور پر تیار کیا گیا ہے تاکہ ہر مسلمان کو قرآن مجید اور روزمرہ اذکار تک باسہولت رسائی میسر ہو۔",
+    developerTechStack: "استعمال شدہ ٹیکنالوجیز",
+    developerContact: "ڈویلپر سے رابطہ کریں",
+    developerSendEmail: "براہ راست ای میل بھیجیں",
+    developerCopyEmail: "ای میل ایڈریس کاپی کریں",
+    developerCopied: "ای میل کاپی ہو گیا!",
+    developerContinuousCharity: "صدقہ جاریہ — دعاؤں کی درخواست",
+    developerGitCommitTitle: "ورسل ری بلڈ کے لیے گٹ احکامات",
+    developerGitCommitDesc: "گٹ ریپوزٹری میں پش کرنے سے ورسل خودکار طریقے سے نیا ورژن بلڈ اور ڈپلائے کر دیتا ہے:",
 
     searchSurah: "سورۃ یا آیت تلاش کریں...",
     allSurahs: "تمام سورتیں",
@@ -536,7 +612,22 @@ export const translations: Record<Language, TranslationDictionary> = {
     navAdhkar: "Dzikir & Doa",
     navTracker: "Target Khatam",
     navCalendar: "Kalender Hijriah",
+    navDeveloper: "Pengembang",
     navVercel: "Deploy Vercel",
+
+    developerTitle: "Tentang Pengembang",
+    developerSubtitle: "Profil pembuat, visi proyek, dan perintah Git untuk rebuild otomatis di Vercel",
+    developerRole: "Full Stack & Web Developer",
+    developerBio: "Anis Thabet — Pengembang perangkat lunak web yang berdedikasi membangun platform Islami modern, berkinerja tinggi, dan bebas iklan untuk umat Muslim di seluruh dunia.",
+    developerMission: "Aplikasi ini dirancang sebagai amal jariyah (sedekah jariyah) untuk mempermudah membaca Al-Quran, mendengarkan tilawah qari ternama, dan menjaga dzikir harian.",
+    developerTechStack: "Teknologi yang Digunakan",
+    developerContact: "Hubungi Pengembang",
+    developerSendEmail: "Kirim Email Langsung",
+    developerCopyEmail: "Salin Alamat Email",
+    developerCopied: "Email berhasil disalin!",
+    developerContinuousCharity: "Sedekah Jariyah — Mohon doa kebaikan",
+    developerGitCommitTitle: "Perintah Git untuk Rebuild di Vercel",
+    developerGitCommitDesc: "Setiap kali Anda melakukan push ke repositori Git yang terhubung ke Vercel, Vercel akan otomatis membangun ulang dan memperbarui aplikasi:",
 
     searchSurah: "Cari surah atau ayat...",
     allSurahs: "Semua Surah",
@@ -640,7 +731,22 @@ export const translations: Record<Language, TranslationDictionary> = {
     navAdhkar: "Zikirler ve Dualar",
     navTracker: "Hatim Takibi",
     navCalendar: "Hicri Takvim",
+    navDeveloper: "Geliştirici",
     navVercel: "Vercel'e Dağıt",
+
+    developerTitle: "Geliştirici Hakkında",
+    developerSubtitle: "Uygulama geliştiricisi, proje vizyonu ve Vercel otomatik derleme Git komutları",
+    developerRole: "Full Stack & Web Geliştirici",
+    developerBio: "Anis Thabet — Modern web teknolojileriyle İslam dünyasına hizmet eden, hızlı, zarif ve reklamsız dijital Kuran platformları inşa etmeye adanmış yazılım geliştiricisi.",
+    developerMission: "Bu proje sadaka-i cariye niyetiyle geliştirilmiş olup, Kuran-ı Kerim tilavetine, zikirlere ve hatim takibine kesintisiz erişim sağlamayı amaçlar.",
+    developerTechStack: "Kullanılan Teknolojiler",
+    developerContact: "Geliştiriciyle İletişim",
+    developerSendEmail: "Doğrudan E-posta Gönder",
+    developerCopyEmail: "E-postayı Kopyala",
+    developerCopied: "E-posta başarıyla kopyalandı!",
+    developerContinuousCharity: "Sadaka-i Cariye — Dualarınızı esirgemeyin",
+    developerGitCommitTitle: "Vercel Yeniden Derleme için Git Komutları",
+    developerGitCommitDesc: "Projeniz Vercel'e bağlı Git deponuza push edildiğinde, Vercel otomatik olarak yeni bir üretim derlemesi başlatır ve anında yayına alır:",
 
     searchSurah: "Sure veya ayet ara...",
     allSurahs: "Tüm Sureler",

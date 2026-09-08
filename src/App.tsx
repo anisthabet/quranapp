@@ -5,6 +5,7 @@ import { AudioLibrary } from './components/AudioLibrary';
 import { AdhkarSection } from './components/AdhkarSection';
 import { KhatmahTracker } from './components/KhatmahTracker';
 import { IslamicCalendar } from './components/IslamicCalendar';
+import { DeveloperSection } from './components/DeveloperSection';
 import { QuranAudioPlayer } from './components/QuranAudioPlayer';
 import { Language, ReadingProgress, Reciter } from './types';
 import { 
@@ -18,7 +19,7 @@ import { translations } from './data/translations';
 
 export default function App() {
   // Navigation tab state
-  const [currentTab, setCurrentTab] = useState<'quran' | 'audio' | 'adhkar' | 'tracker' | 'calendar'>('quran');
+  const [currentTab, setCurrentTab] = useState<'quran' | 'audio' | 'adhkar' | 'tracker' | 'calendar' | 'developer'>('quran');
   
   // Language & Direction state
   const [language, setLanguage] = useState<Language>(getStoredLanguage);
@@ -352,6 +353,30 @@ export default function App() {
         {currentTab === 'calendar' && (
           <IslamicCalendar language={language} />
         )}
+
+        {currentTab === 'developer' && (
+          <DeveloperSection language={language} />
+        )}
+
+        {/* Global Developer & Charity Footer */}
+        <footer className="mt-16 pt-8 pb-12 border-t border-slate-900 text-center text-xs text-slate-500 space-y-2">
+          <p className="flex items-center justify-center gap-1.5 flex-wrap">
+            <span>{t.appName}</span>
+            <span>•</span>
+            <button
+              id="footer-developer-link"
+              onClick={() => {
+                setCurrentTab('developer');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="text-emerald-400 hover:text-emerald-300 font-medium underline underline-offset-4 decoration-emerald-500/40 hover:decoration-emerald-400 transition-colors"
+            >
+              {language === 'ar' ? 'تطوير: أنيس ثابت (Anis Thabet)' : 'Developed by Anis Thabet'}
+            </button>
+            <span>•</span>
+            <span className="text-slate-400">{t.developerContinuousCharity}</span>
+          </p>
+        </footer>
       </main>
 
       {/* Persistent Audio Player at bottom */}
